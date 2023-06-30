@@ -6,6 +6,7 @@ setup: true
 
 orbs:
   continuation: circleci/continuation@0.3.1
+  circleci-cli: circleci/circleci-cli@0.1.9
 
 # Define a job to be invoked later in a workflow.
 # See: https://circleci.com/docs/configuration-reference/#jobs
@@ -15,8 +16,8 @@ jobs:
 
     # Specify the execution environment. You can specify an image from Docker Hub or use one of our convenience images from CircleCI's Developer Hub.
     # See: https://circleci.com/docs/configuration-reference/#executor-job
-    docker:
-      - image: cimg/base:stable
+    #docker:
+    #  - image: cimg/base:stable
     # Add steps to the job
     # See: https://circleci.com/docs/configuration-reference/#steps
     steps:
@@ -24,8 +25,12 @@ jobs:
       - run:
           name: "Say hello"
           command: "echo Hello, World!"
-      - continuation/continue:
-          configuration_path: generated_config.yml # use newly generated config to continue
+      - run:
+          name: set parameters
+          command: echo ". .circleci/scripts/functions.sh" >> $BASH_ENV
+      - run: check-commit-message
+#      - continuation/continue:
+#          configuration_path: generated_config.yml # use newly generated config to continue
 
 
 # Orchestrate jobs using workflows
