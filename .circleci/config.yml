@@ -8,6 +8,13 @@ orbs:
   continuation: circleci/continuation@0.3.1
   circleci-cli: circleci/circleci-cli@0.1.9
 
+parameters:
+  yml-path:
+    description: merged config path
+    type: string
+    default: .circleci/merged.yml
+
+
 # Define a job to be invoked later in a workflow.
 # See: https://circleci.com/docs/configuration-reference/#jobs
 jobs:
@@ -30,6 +37,12 @@ jobs:
           name: set parameters
           command: echo ". .circleci/scripts/functions.sh" >> $BASH_ENV
       - run: check-commit-message
+      - run:
+          name: circle config merge
+          command: |
+            circleci config pack .circleci/ci_config > << pipeline.parameters.yml-path >>
+            circleci config --skip-update-check validate << pipeline.parameters.yml-path >> --ignore-deprecated-images
+
 #      - continuation/continue:
 #          configuration_path: generated_config.yml # use newly generated config to continue
 
