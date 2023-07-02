@@ -1,0 +1,44 @@
+karpenter-apply:
+  when:
+    and:
+      - equal: [ << pipeline.parameters.trigger >>, "base-system" ]
+      - matches: { pattern: ".*(karpenter).*", value: << pipeline.parameters.apply-base >> }
+  jobs:
+    - base-system-apply:
+        executor:
+          name: kubernetes-base
+          cluster-name: << pipeline.parameters.eks-prod >>
+          client-name: prod
+          apply-target: karpenter
+          badge-app-name: karpenter
+
+storageclass-apply:
+  when:
+    and:
+      - equal: [ << pipeline.parameters.trigger >>, "base-system" ]
+      - matches: { pattern: ".*(storageclass).*", value: << pipeline.parameters.apply-base >> }
+  jobs:
+    - base-system-apply:
+        executor:
+          name: kubernetes-base
+          cluster-name: << pipeline.parameters.eks-prod >>
+          client-name: prod
+          apply-target: storageclass
+          badge-app-name: storageclass
+
+admin-apply:
+  when:
+    and:
+      - equal: [ << pipeline.parameters.trigger >>, "base-system" ]
+      - matches: { pattern: ".*(admin).*", value: << pipeline.parameters.apply-base >>}
+  jobs:
+    - ecr-build-and-push-for-bluedeploy
+    - admin-apply:
+        requires:
+          - ecr-build-and-push-for-bluedeploy
+        executor:
+          name: kubernetes-base
+          cluster-name: << pipeline.parameters.eks-prod >>
+          client-name: prod
+          apply-target: admin
+          badge-app-name: admin

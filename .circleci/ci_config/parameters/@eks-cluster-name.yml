@@ -1,0 +1,8 @@
+eks-develop:
+  description: eks cluster name (develop)
+  type: string
+  default: rj-test-eks
+eks-prod:
+  description: eks cluster name (prod)
+  type: string
+  default: RHEMS-SYSTEM
