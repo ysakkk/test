@@ -1,0 +1,11 @@
+default:
+  email_delivery:
+    delivery_method: :smtp
+    smtp_settings:
+      enable_starttls_auto: true
+      address: "email-smtp.us-east-1.amazonaws.com"
+      port: 587
+      domain: "redmine.rhems-japan.com"
+      authentication: :plain
+      user_name: "AKIAJSTLF5PSY55RH7WQ"
+      password: "An+h2rjMPH26OM+7MCzOowtAHSgLcjicRFzDa8Iz2aEH"

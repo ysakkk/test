@@ -1,0 +1,19 @@
+version: '2'
+
+services:
+ redmine:
+    build: ./
+    image: 063150541913.dkr.ecr.ap-northeast-1.amazonaws.com/rhems-redmine:latest
+    container_name: redmine
+    ports:
+     - "10000:3000"
+    environment:
+      REDMINE_DB_MYSQL: rhems-sys.cluster-cu4mvmrvctxu.ap-northeast-1.rds.amazonaws.com
+      REDMINE_DB_USERNAME: intellex
+      REDMINE_DB_PASSWORD: rhemsjapan
+      REDMINE_DB_DATABASE: redmine_intellex
+      #ACCESS_KEY_ID: AKIAJQI6I46IKJ6DSP5Q
+      #SECRET_ACCESS_KEY: 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
+      #AWS_REGION: ap-northeast-1
+    volumes:
+    - ./redmine:/usr/src/redmine

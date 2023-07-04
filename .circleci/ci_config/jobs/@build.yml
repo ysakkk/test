@@ -1,0 +1,11 @@
+ecr-build-and-push-ver5:
+  executor: cimg-python
+  steps:
+    - build-and-push:
+#        repo: rhems-redmine
+        repo: tk-redmine5
+        component: ./redmine5/
+        tag: tk-redmine5-eks
+#        tag: redmine5-eks
+#    - badge-for-build:
+#        text: version5

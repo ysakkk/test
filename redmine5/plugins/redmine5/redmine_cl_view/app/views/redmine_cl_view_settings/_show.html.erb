@@ -1,0 +1,68 @@
+<style type="text/css">
+  <!--
+  field_key{
+    text-align: center;
+    width: 300px;
+  }
+  -->
+</style>
+
+
+
+
+<% @redmine_cl_view_setting = RedmineClViewSetting.new  %>
+<% @project_name = Hash.new  %>
+<%# @access_key = RedmineClViewSetting.new %>
+<%# labelled_tabular_form_for :setting, @redmine_cl_view_setting,
+                             :url => {:controller => 'redmine_cl_view_settings',
+                             :action => 'update', :id => @project, :tab => 'redmine_cl_view',
+                             :partial => 'redmine_cl_view_settings/update',
+                             :setting_id => @redmine_cl_view_setting.id} do |f| %>
+
+<%
+  @project_name = Project.find(params[:id])
+  @access_key = RedmineClViewSetting.where('project_name LIKE ?', '%' + @project_name.identifier.to_s + '%')
+  #@secret_key = RedmineClViewSetting.find_by(project_name: @project_name, select: "secret_key")
+%>
+
+
+<% if @access_key.empty? %>
+
+  <%= form_for(@redmine_cl_view_setting, :url => {:controller => 'redmine_cl_view_setting', :action => 'create'}) do |f| %>
+    <%= f.hidden_field :project_name, :value => @project_name.identifier %>
+
+    <div class="field_key">
+      <%= f.label :access_key, "Server File Name" %>
+      <%= f.text_field :access_key %>
+    </div>
+    <div class="actions">
+      <%= f.submit "登録する" %>
+    </div>
+  <% end %>
+
+<% else %>
+
+  <%#= form_for(@redmine_cl_view_setting, :url => {:controller => 'redmine_cl_view_setting', :action => 'update'}) do |f| %>
+  <%#= f.hidden_field :project_name, :value => @project_name.identifier %>
+  <b> File Name Exist </b>
+  <%# @access_key.each do |entry| %>
+  <div class="field_key">
+    <%#= f.label :access_key, "アクセスキー" %>
+    <%#= f.text_field :access_key, :value => entry.access_key %>
+  </div>
+  <div class="field_key">
+    <%#= f.label :secret_key, "シークレットキー" %>
+    <%#= f.text_field :secret_key, :value => entry.secret_key %>
+  </div>
+  <div class="field_key">
+    <%#= f.label :aws_region, "AWSリージョン" %>
+    <%#= f.text_field :aws_region, :value => entry.aws_region %>
+  </div>
+  <%# end %>
+
+  <div class="actions">
+    <%#= f.submit "更新する", name: "update_button" %>
+  </div>
+  <%# end %>
+
+<% end %>
