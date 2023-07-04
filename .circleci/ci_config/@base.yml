@@ -2,9 +2,3 @@ version: 2.1
 
 orbs:
   rj-package: rhems-japan/package@0.0.66
-  aws-cli: circleci/aws-cli@3.1.1
-  # aws-ecr: circleci/aws-ecr@7.3.0
-  aws-ecr: circleci/aws-ecr@8.1.2
-  aws-eks: circleci/aws-eks@2.2.0
-  docker: circleci/docker@2.1.2
-  kubernetes: circleci/kubernetes@1.3.0

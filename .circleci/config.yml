@@ -42,14 +42,20 @@ jobs:
           command: |
             circleci config pack .circleci/ci_config > << pipeline.parameters.yml-path >>
             circleci config --skip-update-check validate << pipeline.parameters.yml-path >> --ignore-deprecated-images
-
-#      - continuation/continue:
-#          configuration_path: generated_config.yml # use newly generated config to continue
-
+      - continuation/continue:
+          configuration_path: << pipeline.parameters.yml-path >>
+          parameters: param.json
 
 # Orchestrate jobs using workflows
 # See: https://circleci.com/docs/configuration-reference/#workflows
 workflows:
-  say-hello-workflow:
+  setup:
+  #say-hello-workflow:
     jobs:
       - say-hello
+#          filters:
+#            branches:
+#              only: /.*/
+#            tags:
+#              only: /.*/
+

@@ -1,9 +1,0 @@
-### parameters for badge's color
-apply-eks-badge-color:
-  description: apply eks badge's color
-  type: string
-  default: green
-apply-basesystem-badge-color:
-  description: apply base-system badge's color
-  type: string
-  default: yellow
