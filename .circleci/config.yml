@@ -2,49 +2,62 @@
 # See: https://circleci.com/docs/configuration-reference
 version: 2.1
 
-setup: true
-
-orbs:
-  continuation: circleci/continuation@0.3.1
-  circleci-cli: circleci/circleci-cli@0.1.9
-
-parameters:
-  yml-path:
-    description: merged config path
-    type: string
-    default: .circleci/merged.yml
+#   setup: true
+#   
+#   orbs:
+#     continuation: circleci/continuation@0.3.1
+#     circleci-cli: circleci/circleci-cli@0.1.9
+#   
+#   parameters:
+#     yml-path:
+#       description: merged config path
+#       type: string
+#       default: .circleci/merged.yml
 
 
 # Define a job to be invoked later in a workflow.
 # See: https://circleci.com/docs/configuration-reference/#jobs
 jobs:
   say-hello:
-    executor: continuation/default
-
-    # Specify the execution environment. You can specify an image from Docker Hub or use one of our convenience images from CircleCI's Developer Hub.
-    # See: https://circleci.com/docs/configuration-reference/#executor-job
-    #docker:
-    #  - image: cimg/base:stable
-    # Add steps to the job
-    # See: https://circleci.com/docs/configuration-reference/#steps
     steps:
-      - checkout
-      - circleci-cli/install
-      - run:
-          name: "Say hello"
-          command: "echo Hello, World!"
-      - run:
-          name: set parameters
-          command: echo ". .circleci/scripts/functions.sh" >> $BASH_ENV
-      - run: check-commit-message
-      - run:
-          name: circle config merge
-          command: |
-            circleci config pack .circleci/ci_config > << pipeline.parameters.yml-path >>
-            circleci config --skip-update-check validate << pipeline.parameters.yml-path >> --ignore-deprecated-images
-      - continuation/continue:
-          configuration_path: << pipeline.parameters.yml-path >>
-          parameters: param.json
+    - run:
+      name: set date variable
+      comamnd: |
+        echo "export TAG_DATE=$(date +%Y%m%M_%H%M)" >> "$BASH_ENV"
+        source "$BASH_ENV"
+
+  say-hello2:
+    steps:
+    - run:
+      name: show date variable
+      comamnd: echo "$TAG_DATE"
+        
+  #  executor: continuation/default
+
+  #  # Specify the execution environment. You can specify an image from Docker Hub or use one of our convenience images from CircleCI's Developer Hub.
+  #  # See: https://circleci.com/docs/configuration-reference/#executor-job
+  #  #docker:
+  #  #  - image: cimg/base:stable
+  #  # Add steps to the job
+  #  # See: https://circleci.com/docs/configuration-reference/#steps
+  #  steps:
+  #    - checkout
+  #    - circleci-cli/install
+  #    - run:
+  #        name: "Say hello"
+  #        command: "echo Hello, World!"
+  #    - run:
+  #        name: set parameters
+  #        command: echo ". .circleci/scripts/functions.sh" >> $BASH_ENV
+  #    - run: check-commit-message
+  #    - run:
+  #        name: circle config merge
+  #        command: |
+  #          circleci config pack .circleci/ci_config > << pipeline.parameters.yml-path >>
+  #          circleci config --skip-update-check validate << pipeline.parameters.yml-path >> --ignore-deprecated-images
+  #    - continuation/continue:
+  #        configuration_path: << pipeline.parameters.yml-path >>
+  #        parameters: param.json
 
 # Orchestrate jobs using workflows
 # See: https://circleci.com/docs/configuration-reference/#workflows
