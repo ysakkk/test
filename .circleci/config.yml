@@ -60,6 +60,5 @@ workflows:
       - aws-ecr/build_and_push_image:
           auth:
             - aws-cli/setup:
-                profile_name: jcs
           repo: "${AWS_RESOURCE_NAME_PREFIX}"
           tag: latest,$CIRCLE_BUILD_NUM
